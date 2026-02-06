@@ -1,63 +1,43 @@
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
+package org.example;
 
+import java.io.IOException;
+import java.util.Scanner;
 
 
 public class Main {
-    private String className;
-    public Main(String className) {
-        this.className = className;
-    }
-
-    public void CompileCode(String className,String code) throws IOException {
-        File file = new File(className + ".java");
-
-       try( FileWriter writer = new FileWriter(file)) {
-           writer.write(code);
-           writer.flush();
-       }
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-       if (compiler == null) {
-           throw new RuntimeException("No Java compiler available");
-
-       }
-        int result = compiler.run(null, null, null, file.getPath());
-       if (result != 0) {
-           throw new RuntimeException("Compilation failed");
-
-       }
-
-
-
-
-
-
-
-
+    public Main() {
+        this.compiler = compiler;
 
     }
-    public void ExecuteCode(String className) throws Exception {
-        File folder = new File("./");
-        URL url = folder.toURI().toURL();
-        URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
-        Class<?> clazz = classLoader.loadClass(className);
-        Object obj = clazz.getDeclaredConstructor().newInstance();
-        Method method = clazz.getMethod("main");
-        method.invoke(obj);
+    private Compiler compiler;
+
+   public static void main(String[] args) throws Exception {
 
 
 
+
+
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("please enter the class name:");
+    String className = scanner.nextLine();
+    System.out.println("please enter the code:");
+    String code = scanner.nextLine();
+    Compiler compiler = new Compiler();
+    compiler.CompileCode(className,code);
+    if (className == null && code == null) {
+        throw new InterruptedException("Error code and className null");
     }
+    compiler.ExecuteCode(className);
 
 
 
 
-}
-   public static void main(String[] args) throws InterruptedException {
 
 
-}
+    scanner.close();
+
+
+
+
+}  }
+
