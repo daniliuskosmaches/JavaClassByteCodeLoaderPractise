@@ -45,8 +45,12 @@ public class Compiler {
         URL url = folder.toURI().toURL();
         URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
         Class<?> clazz = classLoader.loadClass(className);
+        var constructor = clazz.getConstructor();
         Object obj = clazz.getDeclaredConstructor().newInstance();
+        constructor.setAccessible(true);
         Method method = clazz.getMethod("main");
+        Object instance = constructor.newInstance();
+
         method.invoke(obj);
 
 
