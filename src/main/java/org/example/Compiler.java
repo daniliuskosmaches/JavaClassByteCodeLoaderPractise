@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.regex.Pattern;
 
 public class Compiler {
 
@@ -16,6 +17,9 @@ public class Compiler {
 
 
     private String className;
+
+
+
 
 
 
@@ -49,6 +53,8 @@ public class Compiler {
         Object obj = clazz.getDeclaredConstructor().newInstance();
         constructor.setAccessible(true);
         Method method = clazz.getMethod("main");
+        Method main = clazz.getMethod("main", String[].class);
+        main.setAccessible(true);
         Object instance = constructor.newInstance();
 
         method.invoke(obj);
